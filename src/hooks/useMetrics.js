@@ -1,11 +1,21 @@
-import React from 'react';
+"use client";
 
-const useMetrics = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+import { useQuery } from "@tanstack/react-query";
 
-export default useMetrics;
+export function useMetrics() {
+    return useQuery({
+        queryKey: ["metrics"],
+
+        queryFn: async () => {
+            const res = await fetch(
+                "https://dummyjson.com/products?limit=6"
+            );
+
+            const data = await res.json();
+
+            return data.products;
+        },
+
+        staleTime: 1000 * 60 * 5,
+    });
+}
